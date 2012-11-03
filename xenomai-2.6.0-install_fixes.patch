@@ -1,0 +1,16 @@
+Stop make install from trying to create device nodes in /dev
+
+diff -up xenomai-2.6.0/Makefile.in.install_fixes xenomai-2.6.0/Makefile.in
+--- xenomai-2.6.0/Makefile.in.install_fixes	2011-10-18 13:17:18.000000000 -0500
++++ xenomai-2.6.0/Makefile.in	2012-11-03 00:28:06.159672488 -0500
+@@ -791,7 +791,9 @@ echo '*** privileges.' ; \
+ 	  $$sudo mknod -m 666 $(DESTDIR)/dev/rtheap c 10 254 ; \
+ 	fi
+ 
+-install-exec-local: devices
++# don't make device nodes in RPM
++#install-exec-local: devices
++install-exec-local:
+ 
+ install-user:
+ 	$(MAKE) SUDO=false install

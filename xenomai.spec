@@ -9,6 +9,8 @@ Release: 2%{?dist}
 License: GPL
 Group: System Tools
 Source: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
+# Stop make install from creating device nodes in /dev
+Patch0:    xenomai-2.6.0-install_fixes.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: gcc doxygen make tetex texlive-latex
 URL: http://xenomai.org/
@@ -33,6 +35,7 @@ to user-space applications, seamlessly integrated into the GNU/Linux environment
 
 %prep
 %setup -q
+%patch0 -p1 -z .install_fixes
 
 %build
 %configure \
@@ -49,8 +52,7 @@ rm -fr %{buildroot}
 mkdir -p $RPM_BUILD_ROOT%{_includedir}
 
 %makeinstall \
-        testdir=$RPM_BUILD_ROOT%{_bindir} \
-        sudo=
+        testdir=$RPM_BUILD_ROOT%{_bindir}
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 cp -r $RPM_BUILD_DIR/xenomai-%{version}/examples $RPM_BUILD_ROOT%{_datadir}/doc/xenomai/
 cp $RPM_BUILD_DIR/xenomai-%{version}/src/testsuite/xeno-test/xeno-test-run $RPM_BUILD_ROOT%{_bindir}/
@@ -87,5 +89,6 @@ rm -fr %{buildroot}
 %changelog
 * Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
 - set make install variables on command line to fix errors
--   $testdir, $sudo
+- add patch to prevent /dev node creation
+
 
