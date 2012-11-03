@@ -48,7 +48,9 @@ make
 rm -fr %{buildroot}
 mkdir -p $RPM_BUILD_ROOT%{_includedir}
 
-%makeinstall testdir=$RPM_BUILD_ROOT%{_bindir}
+%makeinstall \
+        testdir=$RPM_BUILD_ROOT%{_bindir} \
+        sudo=
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 cp -r $RPM_BUILD_DIR/xenomai-%{version}/examples $RPM_BUILD_ROOT%{_datadir}/doc/xenomai/
 cp $RPM_BUILD_DIR/xenomai-%{version}/src/testsuite/xeno-test/xeno-test-run $RPM_BUILD_ROOT%{_bindir}/
@@ -84,4 +86,6 @@ rm -fr %{buildroot}
 
 %changelog
 * Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
-- define $testdir on make install commandline
+- set make install variables on command line to fix errors
+-   $testdir, $sudo
+
