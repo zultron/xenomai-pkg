@@ -1,1 +1,8 @@
-xenomai-2.6.0.tar.bz2
+# sources
+/xenomai-2.6.0.tar.bz2
+
+# fedpkg local build artifacts
+/xenomai-2.6.0/
+
+# emacs droppings
+/*~
