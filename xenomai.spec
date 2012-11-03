@@ -5,7 +5,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.0
-Release: 1%{?dist}.4
+Release: 2%{?dist}
 License: GPL
 Group: System Tools
 Source: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -48,7 +48,7 @@ make
 rm -fr %{buildroot}
 mkdir -p $RPM_BUILD_ROOT%{_includedir}
 
-%makeinstall
+%makeinstall testdir=$RPM_BUILD_ROOT%{_bindir}
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 cp -r $RPM_BUILD_DIR/xenomai-%{version}/examples $RPM_BUILD_ROOT%{_datadir}/doc/xenomai/
 cp $RPM_BUILD_DIR/xenomai-%{version}/src/testsuite/xeno-test/xeno-test-run $RPM_BUILD_ROOT%{_bindir}/
@@ -80,3 +80,8 @@ rm -fr %{buildroot}
 %{_libdir}/lib*.a
 %{_includedir}/*
 %{_libdir}/pkgconfig/*.pc
+
+
+%changelog
+* Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
+- define $testdir on make install commandline
