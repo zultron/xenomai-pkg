@@ -5,7 +5,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.0
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
 Group: System Tools
 Source: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -98,12 +98,14 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 
 %changelog
-* Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
-- inherit RPM with no %%changelog, no credits from mirrors.ysn.ru
+* Mon Nov  5 2012 John Morris <john@zultron.com> - 2.6.0-3.el6
 - fix make install problems:
--   set make install variables on command line
 -   add patch to prevent /dev node creation
 -   create needed /dev entries in %%pre script
+
+* Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
+- inherit RPM with no %%changelog, no credits from mirrors.ysn.ru
+- fix make install problems:  set make install variables on command line
 - fix up %%docs
 
 
