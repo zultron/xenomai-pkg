@@ -56,10 +56,10 @@ mkdir -p $RPM_BUILD_ROOT%{_includedir}
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 cp $RPM_BUILD_DIR/xenomai-%{version}/src/testsuite/xeno-test/xeno-test-run $RPM_BUILD_ROOT%{_bindir}/
-mv $RPM_BUILD_DIR%{_docdir}/%{name} $RPM_BUILD_DIR%{_docdir}/%{name}-%{version}
+mv $RPM_BUILD_ROOT%{_docdir}/%{name} $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
 
-mkdir -p $RPM_BUILD_DIR${_sysconfdir}/udev/rules.d
-cp ksrc/nucleus/udev/*.rules $RPM_BUILD_DIR${_sysconfdir}/udev/rules.d
+mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
+cp ksrc/nucleus/udev/*.rules $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 
 
 %clean
