@@ -85,6 +85,7 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 %{_libdir}/posix.wrappers
 %{_bindir}/*
 %{_sbindir}/*
+%{_sysconfdir}/udev/rules.d/*
 
 %files devel
 %defattr(-, root, root)
@@ -102,6 +103,7 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 - fix make install problems:
 -   add patch to prevent /dev node creation
 -   create needed /dev entries in %%pre script
+-   install udev rules files
 
 * Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
 - inherit RPM with no %%changelog, no credits from mirrors.ysn.ru
