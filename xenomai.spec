@@ -48,18 +48,28 @@ make
 #make %{_smp_mflags}
 
 %install
-rm -fr %{buildroot}
+rm -fr $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_includedir}
 
 %makeinstall \
         testdir=$RPM_BUILD_ROOT%{_bindir}
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
-cp -r $RPM_BUILD_DIR/xenomai-%{version}/examples $RPM_BUILD_ROOT%{_datadir}/doc/xenomai/
+
 cp $RPM_BUILD_DIR/xenomai-%{version}/src/testsuite/xeno-test/xeno-test-run $RPM_BUILD_ROOT%{_bindir}/
-mv $RPM_BUILD_ROOT%{_datadir}/doc/xenomai/ $RPM_BUILD_ROOT%{_datadir}/doc/xenomai-%{version}
+
+mkdir -p $RPM_BUILD_DIR${_sysconfdir}/udev/rules.d
+cp ksrc/nucleus/udev/*.rules $RPM_BUILD_DIR${_sysconfdir}/udev/rules.d
+
 
 %clean
-rm -fr %{buildroot}
+rm -fr $RPM_BUILD_DIR
+
+%pre
+# create device nodes removed from make install
+for ent in `seq 0 31`; do
+    test -e /dev/rtp${ent} || mknod -m 0666 /dev/rtp${ent} c 150 ${ent}
+fi
+test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 %post -p /sbin/ldconfig
 
@@ -68,6 +78,7 @@ rm -fr %{buildroot}
 %files
 %defattr(-, root, root)
 %doc %{_mandir}/man1/*.gz
+%doc examples doc/generated/*
 %{_datadir}/xenomai/*
 %{_libdir}/lib*.so.*
 %{_libdir}/lib*.so
@@ -88,7 +99,11 @@ rm -fr %{buildroot}
 
 %changelog
 * Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
-- set make install variables on command line to fix errors
-- add patch to prevent /dev node creation
+- inherit RPM with no %%changelog, no credits from mirrors.ysn.ru
+- fix make install problems:
+-   set make install variables on command line
+-   add patch to prevent /dev node creation
+-   create needed /dev entries in %%pre script
+- fix up %%docs
 
 
