@@ -88,7 +88,7 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 %files devel
 %defattr(-, root, root)
-%doc %{_datadir}/doc/xenomai-%{version}/examples
+%doc examples
 %doc %{_datadir}/doc/xenomai-%{version}/html
 %doc %{_datadir}/doc/xenomai-%{version}/pdf
 %doc %{_datadir}/doc/xenomai-%{version}/txt
