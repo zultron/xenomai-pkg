@@ -56,6 +56,7 @@ mkdir -p $RPM_BUILD_ROOT%{_includedir}
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 cp $RPM_BUILD_DIR/xenomai-%{version}/src/testsuite/xeno-test/xeno-test-run $RPM_BUILD_ROOT%{_bindir}/
+mv $RPM_BUILD_DIR%{_docdir}/%{name} $RPM_BUILD_DIR%{_docdir}/%{name}-%{version}
 
 mkdir -p $RPM_BUILD_DIR${_sysconfdir}/udev/rules.d
 cp ksrc/nucleus/udev/*.rules $RPM_BUILD_DIR${_sysconfdir}/udev/rules.d
@@ -78,7 +79,6 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 %files
 %defattr(-, root, root)
 %doc %{_mandir}/man1/*.gz
-%doc examples doc/generated/*
 %{_datadir}/xenomai/*
 %{_libdir}/lib*.so.*
 %{_libdir}/lib*.so
