@@ -88,10 +88,10 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 %files devel
 %defattr(-, root, root)
-%{_datadir}/doc/xenomai-%{version}/examples/*
-%{_datadir}/doc/xenomai-%{version}/html/*
-%{_datadir}/doc/xenomai-%{version}/pdf/*
-%{_datadir}/doc/xenomai-%{version}/txt/*
+%doc %{_datadir}/doc/xenomai-%{version}/examples
+%doc %{_datadir}/doc/xenomai-%{version}/html
+%doc %{_datadir}/doc/xenomai-%{version}/pdf
+%doc %{_datadir}/doc/xenomai-%{version}/txt
 %{_libdir}/lib*.a
 %{_includedir}/*
 %{_libdir}/pkgconfig/*.pc
