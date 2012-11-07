@@ -5,7 +5,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.0
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL
 Group: System Tools
 Source: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -40,7 +40,8 @@ to user-space applications, seamlessly integrated into the GNU/Linux environment
 %build
 %configure \
     --enable-x86-tsc \
-    --enable-dox-doc
+    --enable-dox-doc \
+    --enable-dlopen-skins
 
 # fix doxygen file
 (cd $RPM_BUILD_DIR/xenomai-%{version}/doc/doxygen && doxygen -u Doxyfile-common)
@@ -99,6 +100,9 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 
 %changelog
+* Wed Nov  7 2012 John Morris <john@zultron.com> - 2.6.0-4.el6
+- Add --enable-dlopen-skins flag to ./configure
+
 * Mon Nov  5 2012 John Morris <john@zultron.com> - 2.6.0-3.el6
 - fix make install problems:
 -   add patch to prevent /dev node creation
