@@ -5,7 +5,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.0
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL
 Group: System Tools
 Source: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -70,7 +70,7 @@ rm -fr $RPM_BUILD_DIR
 # create device nodes removed from make install
 for ent in `seq 0 31`; do
     test -e /dev/rtp${ent} || mknod -m 0666 /dev/rtp${ent} c 150 ${ent}
-fi
+done
 test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 %post -p /sbin/ldconfig
@@ -100,6 +100,9 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 
 %changelog
+* Wed Nov  8 2012 John Morris <john@zultron.com> - 2.6.0-5.el6
+- Fix syntax error in %%pre script
+
 * Wed Nov  7 2012 John Morris <john@zultron.com> - 2.6.0-4.el6
 - Add --enable-dlopen-skins flag to ./configure
 
