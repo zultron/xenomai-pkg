@@ -1,3 +1,13 @@
+# pre-release settings
+%global _gitrel    20130103gita27a0c4
+%global _pre       0
+%global _prerel %{?_pre:pre%{_pre}}%{?_rc:rc%{_rc}}%{?_gitrel:.%{_gitrel}}
+%global _dotprerel %{?_prerel:.%{_prerel}}
+# e.g. 'pre3', 'rc1'  (use in tarball filename)
+%global _pre_or_rc  %{?_pre:pre%{_pre}}%{?_rc:rc%{_rc}}
+
+%define dist .el6
+
 %global _includedir	/usr/include/xenomai/
 
 # Undefine _FORTIFY_SOURCE cflag; breaks (at least) regression tests
@@ -7,11 +17,14 @@
 
 Summary: Real-time development framework
 Name: xenomai
-Version: 2.6.2
-Release: 0%{?dist}
+Version: 2.6.3
+Release: 0.0%{?_dotprerel}%{?dist}
+
 License: GPL
 Group: System Tools
-Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
+#Source: http://download.gna.org/xenomai/xenomai-%{version}.tar.bz2
+# git from git://git.xenomai.org/xenomai-2.6.git
+Source0: xenomai-%{version}%{?_gitrel:.%{_gitrel}}.tar.bz2
 Source1: README.developers
 Source2: xenomai.init
 # Stop make install from creating device nodes in /dev
@@ -146,6 +159,15 @@ fi
 
 
 %changelog
+* Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130110gitc14e09f.el6
+- Update to 2.6.3-20130103gita27a0c4
+
+* Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130103gita27a0c4.el6
+- Update to 2.6.3-20130110gitc14e09f
+
+* Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130103gita27a0c4.el6
+- Update to 2.6.3-20130103gita27a0c4
+
 * Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.2-0.el6
 - Update to v2.6.2
 - Add xenomai patch to -devel pkg

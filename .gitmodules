@@ -1,0 +1,3 @@
+[submodule "xenomai-src"]
+	path = xenomai-src
+	url = git://git.xenomai.org/xenomai-2.6.git
