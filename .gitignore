@@ -1,11 +1,11 @@
 # sources
-/xenomai-2.6.?.tar.bz2
+/xenomai-2.6.*.tar.bz2
 
 # fedpkg local build artifacts
 /xenomai-2.6.?/
-/.build-2.6.?-?.el6.log
+/.build-2.6.*.log
 /x86_64/
-/xenomai-2.6.?-?.el6.src.rpm
+/xenomai-2.6.*.src.rpm
 
 # emacs droppings
 /*~
