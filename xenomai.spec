@@ -40,8 +40,10 @@ to user-space applications, seamlessly integrated into the GNU/Linux environment
 %build
 %configure \
     --enable-x86-tsc \
-    --enable-dox-doc \
-    --enable-dlopen-skins
+    --enable-dlopen-skins \
+    --with-testdir=%{_libdir}/xenomai
+# this is very broken on el6
+#    --enable-dox-doc \
 
 # prepare patch
 bash scripts/prepare-patch.sh %{_arch}
@@ -55,13 +57,8 @@ make
 rm -fr $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_includedir}
 
-%makeinstall \
-        testdir=$RPM_BUILD_ROOT%{_bindir} \
-        tstdir=$RPM_BUILD_ROOT%{_bindir}
+make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
-
-cp src/testsuite/xeno-test/xeno-test-run \
-    $RPM_BUILD_ROOT%{_bindir}/
 
 # all docs currently going into -devel pkg
 mv $RPM_BUILD_ROOT%{_docdir}/%{name} \
@@ -98,6 +95,7 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 %{_libdir}/lib*.so.*
 %{_libdir}/lib*.so
 %{_libdir}/posix.wrappers
+%{_libdir}/xenomai
 %{_bindir}/*
 %{_sbindir}/*
 %{_sysconfdir}/udev/rules.d/*
@@ -116,6 +114,9 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 - Update to v2.6.2
 - Add xenomai patch to -devel pkg
 - Move whole docdir to -devel pkg (really needs to be split up)
+- Fix testdir location
+- Root out %%makeinstall ugliness
+- Disable broken doxygen
 
 * Wed Nov  8 2012 John Morris <john@zultron.com> - 2.6.0-5.el6
 - Fix syntax error in %%pre script
