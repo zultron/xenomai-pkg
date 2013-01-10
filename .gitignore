@@ -4,6 +4,8 @@
 # fedpkg local build artifacts
 /xenomai-2.6.?/
 /.build-2.6.?-?.el6.log
+/x86_64/
+/xenomai-2.6.?-?.el6.src.rpm
 
 # emacs droppings
 /*~
