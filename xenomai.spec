@@ -4,8 +4,8 @@
 
 Summary: Real-time development framework
 Name: xenomai
-Version: 2.6.0
-Release: 5%{?dist}
+Version: 2.6.2
+Release: 0%{?dist}
 License: GPL
 Group: System Tools
 Source: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -43,8 +43,11 @@ to user-space applications, seamlessly integrated into the GNU/Linux environment
     --enable-dox-doc \
     --enable-dlopen-skins
 
+# prepare patch
+bash scripts/prepare-patch.sh %{_arch}
+
 # fix doxygen file
-(cd $RPM_BUILD_DIR/xenomai-%{version}/doc/doxygen && doxygen -u Doxyfile-common)
+(cd doc/doxygen && doxygen -u Doxyfile-common)
 make
 #make %{_smp_mflags}
 
@@ -53,18 +56,30 @@ rm -fr $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_includedir}
 
 %makeinstall \
-        testdir=$RPM_BUILD_ROOT%{_bindir}
+        testdir=$RPM_BUILD_ROOT%{_bindir} \
+        tstdir=$RPM_BUILD_ROOT%{_bindir}
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
-cp $RPM_BUILD_DIR/xenomai-%{version}/src/testsuite/xeno-test/xeno-test-run $RPM_BUILD_ROOT%{_bindir}/
-mv $RPM_BUILD_ROOT%{_docdir}/%{name} $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+cp src/testsuite/xeno-test/xeno-test-run \
+    $RPM_BUILD_ROOT%{_bindir}/
+
+# all docs currently going into -devel pkg
+mv $RPM_BUILD_ROOT%{_docdir}/%{name} \
+    $RPM_BUILD_ROOT%{_docdir}/%{name}-devel-%{version}
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 cp ksrc/nucleus/udev/*.rules $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 
+# install patches
+mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/xenomai
+for i in ksrc/arch/x86/patches/*ipipe-*.patch; do
+    PATCHNAME=$(basename $i)
+    cp $i $RPM_BUILD_ROOT%{_usrsrc}/xenomai/$PATCHNAME
+    cat xenomai_all.patch >> $RPM_BUILD_ROOT%{_srcdir}/xenomai/$PATCHNAME
+done
 
 %clean
-rm -fr $RPM_BUILD_DIR
+rm -fr $RPM_BUILD_ROOT
 
 %pre
 # create device nodes removed from make install
@@ -80,7 +95,6 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 %files
 %defattr(-, root, root)
 %doc %{_mandir}/man1/*.gz
-%{_datadir}/xenomai/*
 %{_libdir}/lib*.so.*
 %{_libdir}/lib*.so
 %{_libdir}/posix.wrappers
@@ -91,15 +105,18 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 %files devel
 %defattr(-, root, root)
 %doc examples
-%doc %{_datadir}/doc/xenomai-%{version}/html
-%doc %{_datadir}/doc/xenomai-%{version}/pdf
-%doc %{_datadir}/doc/xenomai-%{version}/txt
 %{_libdir}/lib*.a
 %{_includedir}/*
 %{_libdir}/pkgconfig/*.pc
+%{_usrsrc}/xenomai
 
 
 %changelog
+* Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.2-0.el6
+- Update to v2.6.2
+- Add xenomai patch to -devel pkg
+- Move whole docdir to -devel pkg (really needs to be split up)
+
 * Wed Nov  8 2012 John Morris <john@zultron.com> - 2.6.0-5.el6
 - Fix syntax error in %%pre script
 
