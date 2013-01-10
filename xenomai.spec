@@ -72,7 +72,7 @@ mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/xenomai
 for i in ksrc/arch/x86/patches/*ipipe-*.patch; do
     PATCHNAME=$(basename $i)
     cp $i $RPM_BUILD_ROOT%{_usrsrc}/xenomai/$PATCHNAME
-    cat xenomai_all.patch >> $RPM_BUILD_ROOT%{_srcdir}/xenomai/$PATCHNAME
+    cat xenomai_all.patch >> $RPM_BUILD_ROOT%{_usrsrc}/xenomai/$PATCHNAME
 done
 
 %clean
