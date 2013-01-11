@@ -46,7 +46,7 @@ to user-space applications, seamlessly integrated into the GNU/Linux environment
 #    --enable-dox-doc \
 
 # prepare patch
-bash scripts/prepare-patch.sh %{_arch}
+bash scripts/prepare-patch.sh x86
 
 # fix doxygen file
 (cd doc/doxygen && doxygen -u Doxyfile-common)
