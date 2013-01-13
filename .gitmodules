@@ -1,3 +1,6 @@
 [submodule "xenomai-src"]
 	path = xenomai-src
 	url = git://git.xenomai.org/xenomai-2.6.git
+[submodule "kernel-3.5.7-i-pipe"]
+	path = kernel-3.5.7-i-pipe
+	url = git://git.xenomai.org/ipipe-gch.git

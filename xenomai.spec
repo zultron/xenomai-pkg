@@ -1,5 +1,5 @@
 # pre-release settings
-%global _gitrel    20130103gita27a0c4
+%global _gitrel    20130112git75a1782
 %global _pre       0
 %global _prerel %{?_pre:pre%{_pre}}%{?_rc:rc%{_rc}}%{?_gitrel:.%{_gitrel}}
 %global _dotprerel %{?_prerel:.%{_prerel}}
@@ -159,6 +159,12 @@ fi
 
 
 %changelog
+* Sat Jan 12 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130103gita27a0c4.el6
+- Update to 2.6.3-20130112git75a1782
+- Add kernel-3.5.7-i-pipe submodule
+  - Use to generate i-ipipe patch, committed to xenomai-src submodule
+  - Gilles asked for testing; broken; will report
+
 * Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130110gitc14e09f.el6
 - Update to 2.6.3-20130103gita27a0c4
 
