@@ -1,12 +1,12 @@
 # pre-release settings
-%global _gitrel    20130113git08f0596
+%global _gitrel    20130113git851281e
 %global _pre       0
 %global _prerel %{?_pre:pre%{_pre}}%{?_rc:rc%{_rc}}%{?_gitrel:.%{_gitrel}}
 %global _dotprerel %{?_prerel:.%{_prerel}}
 # e.g. 'pre3', 'rc1'  (use in tarball filename)
 %global _pre_or_rc  %{?_pre:pre%{_pre}}%{?_rc:rc%{_rc}}
 
-%define dist .el6
+%global dist .el6
 
 %global _includedir	/usr/include/xenomai/
 
@@ -27,6 +27,9 @@ Group: System Tools
 Source0: xenomai-%{version}%{?_gitrel:.%{_gitrel}}.tar.bz2
 Source1: README.developers
 Source2: xenomai.init
+# http://git.xenomai.org/?p=xenomai-2.6.git
+# git diff 851281e5 v3.5.7
+Source3: ipipe-core-3.5.7-x86-0.120109gitfde77b2e.patch
 # Stop make install from creating device nodes in /dev
 Patch0:    xenomai-2.6.0-install_fixes.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
@@ -61,6 +64,7 @@ important information about packaging Xenomai-enabled applications.
 %prep
 %setup -q
 %patch0 -p1 -z .install_fixes
+cp %{SOURCE1} ksrc/arch/x86/patches
 
 %build
 %configure \
@@ -139,7 +143,7 @@ fi
 
 %files
 %defattr(-, root, root)
-%doc %{_mandir}/man1/*.gz
+%doc %{_mandir}/man1/*.gz 
 %{_libdir}/lib*.so.*
 %{_libdir}/lib*.so
 %{_libdir}/posix.wrappers
@@ -159,24 +163,15 @@ fi
 
 
 %changelog
-* Sun Jan 13 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.120113git210ed428.el6
-- Update to 2.6.3-20130113git08f0596
-- Pulled Gilles's i-pipe branch, commit 210ed428
-
-* Sat Jan 12 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130103gita27a0c4.el6
-- Update to 2.6.3-20130112git75a1782
-- Add kernel-3.5.7-i-pipe submodule
-  - Use to generate i-ipipe patch, committed to xenomai-src submodule
-  - Gilles asked for testing; broken; will report
-
-* Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130110gitc14e09f.el6
-- Update to 2.6.3-20130103gita27a0c4
-
-* Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130103gita27a0c4.el6
-- Update to 2.6.3-20130110gitc14e09f
-
-* Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130103gita27a0c4.el6
-- Update to 2.6.3-20130103gita27a0c4
+* Mon Jan 14 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130114git308ec2a.el6
+- Update to 2.6.3-20130113git851281e
+- Upstream xenomai-2.6 tree, master branch, 851281e5 commit
+- Be sure _FORTIFY_SOURCE macro is undefined
+- Update ipipe-core to 120109gitfde77b2e; provided as RPM source
+- kernel-3.5.7-i-pipe submodule: i-ipipe patch fixes several problems:
+  - fix C1E detection on older AMD-64 cpus (without C1E)
+  - CONFIG_TRANSPARENT_HUGEPAGE disabled
+- Note for developers about _FORTIFY_SOURCE
 
 * Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.2-0.el6
 - Update to v2.6.2
