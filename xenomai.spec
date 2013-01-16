@@ -16,6 +16,7 @@ Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
 Source1: README.developers
 # Stop make install from creating device nodes in /dev
+Source2: xenomai.init
 Patch0:    xenomai-2.6.0-install_fixes.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: gcc doxygen make tetex texlive-latex
@@ -89,6 +90,9 @@ cp -a examples \
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 cp ksrc/nucleus/udev/*.rules $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 
+mkdir -p $RPM_BUILD_ROOT%{_initrddir}
+cp %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/xenomai
+
 # install patches
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/xenomai
 for i in ksrc/arch/x86/patches/*ipipe-*.patch; do
@@ -107,7 +111,18 @@ for ent in `seq 0 31`; do
 done
 test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
-%post -p /sbin/ldconfig
+%preun
+if [ $1 -eq 0 ] ; then
+    # Package removal, not upgrade
+    /sbin/chkconfig --del xenomai &> /dev/null || :
+fi
+
+%post
+/sbin/ldconfig
+if [ $1 -eq 1 ] ; then
+    # Initial installation
+    /sbin/chkconfig --add xenomai &> /dev/null || :
+fi
 
 %postun -p /sbin/ldconfig
 
@@ -121,6 +136,7 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 %{_bindir}/*
 %{_sbindir}/*
 %{_sysconfdir}/udev/rules.d/*
+%{_initrddir}/xenomai
 
 %files devel
 %defattr(-, root, root)

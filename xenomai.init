@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# xenomai-setup - set up non-root group for Xenomai RT access
+#
+# chkconfig:   2345 00 99
+# description: This script is used to setup services for use with the \
+#              Xenomai realtime Linux kernel \
+#              The main use now is to enable non-root access for userland \
+#	       RT apps
+
+# Source function library.
+. /etc/init.d/functions
+
+SYSFS_FILE=/sys/module/xeno_nucleus/parameters/xenomai_gid
+XENOMAI_GROUP=$(getent group xenomai | awk -F : '{print $3}')
+
+# check that we actually have a group
+test -n "$XENOMAI_GROUP" || exit 0
+# check that the sysfs file actually exists
+test -f $SYSFS_FILE || exit 0
+
+ret=0
+
+status() {
+    CUR_GID=$(cat $SYSFS_FILE)
+    case "$CUR_GID" in
+	-1) echo -n $"disabled" ;;
+	"$XENOMAI_GROUP")
+	    echo -n $"enabled" ;;
+	*)  echo -n $"unknown group $CUR_GID != $XENOMAI_GROUP"; warning ;;
+    esac
+    test $CUR_GID = $XENOMAI_GROUP
+}
+
+start() {
+    echo -n $"Enabling Xenomai non-root access:  "
+    echo $XENOMAI_GROUP > $SYSFS_FILE
+    status && passed || failure
+    echo
+}
+
+
+stop() {
+    echo -n $"Disabling Xenomai non-root access:  "
+    echo -1 > $SYSFS_FILE
+    status && failure || passed
+    echo
+}
+
+# See how we were called.
+case "$1" in
+    start) start ;;
+    stop) stop ;;
+    status) echo -n $"Xenomai non-root access:  "; status; ret=$?; echo ;;
+    *) echo $"Usage: $0 {start|stop|status}"
+	;;
+esac
+
+exit $ret
