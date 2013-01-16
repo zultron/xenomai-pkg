@@ -172,6 +172,7 @@ fi
   - fix C1E detection on older AMD-64 cpus (without C1E)
   - CONFIG_TRANSPARENT_HUGEPAGE disabled
 - Note for developers about _FORTIFY_SOURCE
+- Add init script
 
 * Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.2-0.el6
 - Update to v2.6.2
