@@ -31,18 +31,6 @@ index 82dd174..286ec04 100644
  
  ALC861/660
  ==========
-diff --git a/Makefile b/Makefile
-index b1f275b..c901aae 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,6 +1,6 @@
- VERSION = 3
- PATCHLEVEL = 5
--SUBLEVEL = 7
-+SUBLEVEL = 3
- EXTRAVERSION =
- NAME = Saber-toothed Squirrel
- 
 diff --git a/arch/alpha/include/asm/atomic.h b/arch/alpha/include/asm/atomic.h
 index c2cbe4f..3bb7ffe 100644
 --- a/arch/alpha/include/asm/atomic.h
