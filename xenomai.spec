@@ -2,13 +2,19 @@
 
 %define _includedir	/usr/include/xenomai/
 
+# Undefine _FORTIFY_SOURCE cflag; breaks (at least) regression tests
+# http://www.xenomai.org/pipermail/xenomai/2013-January/027341.html
+# http://www.xenomai.org/pipermail/xenomai/2013-January/027342.html
+%global __global_cflags %{__global_cflags} -Wp,-U_FORTIFY_SOURCE
+
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.2
 Release: 0%{?dist}
 License: GPL
 Group: System Tools
-Source: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
+Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
+Source1: README.developers
 # Stop make install from creating device nodes in /dev
 Patch0:    xenomai-2.6.0-install_fixes.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
@@ -16,9 +22,11 @@ BuildRequires: gcc doxygen make tetex texlive-latex
 URL: http://xenomai.org/
 
 %description
-Xenomai is a real-time development framework cooperating with the Linux kernel,
-in order to provide a pervasive, interface-agnostic, hard real-time support
-to user-space applications, seamlessly integrated into the GNU/Linux environment.
+
+Xenomai is a real-time development framework cooperating with the
+Linux kernel, in order to provide a pervasive, interface-agnostic,
+hard real-time support to user-space applications, seamlessly
+integrated into the GNU/Linux environment.
 
 
 %package devel
@@ -29,9 +37,14 @@ Requires: gcc
 Requires: pkgconfig
 
 %description devel
-Xenomai is a real-time development framework cooperating with the Linux kernel,
-in order to provide a pervasive, interface-agnostic, hard real-time support
-to user-space applications, seamlessly integrated into the GNU/Linux environment.
+
+Xenomai is a real-time development framework cooperating with the
+Linux kernel, in order to provide a pervasive, interface-agnostic,
+hard real-time support to user-space applications, seamlessly
+integrated into the GNU/Linux environment.
+
+Developers should read %{_docdir}/%{name}-devel-%{version} for
+important information about packaging Xenomai-enabled applications.
 
 %prep
 %setup -q
@@ -50,6 +63,7 @@ bash scripts/prepare-patch.sh x86
 
 # fix doxygen file
 (cd doc/doxygen && doxygen -u Doxyfile-common)
+
 make
 #make %{_smp_mflags}
 
@@ -63,6 +77,14 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 # all docs currently going into -devel pkg
 mv $RPM_BUILD_ROOT%{_docdir}/%{name} \
     $RPM_BUILD_ROOT%{_docdir}/%{name}-devel-%{version}
+
+# include warning about _FORTIFY_SOURCE for developers
+# hopefully this can be removed when upstream fixes the problem
+cp %{SOURCE1} $RPM_BUILD_ROOT%{_docdir}/%{name}-devel-%{version}
+
+# copy examples
+cp -a examples \
+   $RPM_BUILD_ROOT%{_docdir}/%{name}-devel-%{version}
 
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 cp ksrc/nucleus/udev/*.rules $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
@@ -102,7 +124,7 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 %files devel
 %defattr(-, root, root)
-%doc examples
+%doc %{_docdir}/%{name}-devel-%{version}
 %{_libdir}/lib*.a
 %{_includedir}/*
 %{_libdir}/pkgconfig/*.pc
@@ -114,9 +136,12 @@ test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 - Update to v2.6.2
 - Add xenomai patch to -devel pkg
 - Move whole docdir to -devel pkg (really needs to be split up)
+- Add examples directory to docdir
 - Fix testdir location
 - Root out %%makeinstall ugliness
 - Disable broken doxygen
+- Undefine _FORTIFY_SOURCE in compile, and add README.developers
+- Formatting fixes
 
 * Wed Nov  8 2012 John Morris <john@zultron.com> - 2.6.0-5.el6
 - Fix syntax error in %%pre script
