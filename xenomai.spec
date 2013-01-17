@@ -170,7 +170,7 @@ fi
 -   install udev rules files
 
 * Sat Nov  3 2012 John Morris <john@zultron.com> - 2.6.0-2.el6
-- inherit RPM with no %%changelog, no credits from mirrors.ysn.ru
+- inherit RPM with no changelog, no credits from mirrors.ysn.ru
 - fix make install problems:  set make install variables on command line
 - fix up %%docs
 
