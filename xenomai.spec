@@ -164,13 +164,10 @@ fi
 * Mon Jan 14 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130114git308ec2a.el6
 - Update to 2.6.3-20130113git851281e
 - Upstream xenomai-2.6 tree, master branch, 851281e5 commit
-- Be sure _FORTIFY_SOURCE macro is undefined
 - Update ipipe-core to 120109gitfde77b2e; provided as RPM source
 - kernel-3.5.7-i-pipe submodule: i-ipipe patch fixes several problems:
   - fix C1E detection on older AMD-64 cpus (without C1E)
   - CONFIG_TRANSPARENT_HUGEPAGE disabled
-- Note for developers about _FORTIFY_SOURCE
-- Add init script
 
 * Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.2-0.el6
 - Update to v2.6.2
