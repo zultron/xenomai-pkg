@@ -6,8 +6,6 @@
 # e.g. 'pre3', 'rc1'  (use in tarball filename)
 %global _pre_or_rc  %{?_pre:pre%{_pre}}%{?_rc:rc%{_rc}}
 
-%global dist .el6
-
 %global _includedir	/usr/include/xenomai/
 
 # Undefine _FORTIFY_SOURCE cflag; breaks (at least) regression tests
