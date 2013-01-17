@@ -1,5 +1,3 @@
-%define dist .el6
-
 %global _includedir	/usr/include/xenomai/
 
 # Undefine _FORTIFY_SOURCE cflag; breaks (at least) regression tests
