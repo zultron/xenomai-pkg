@@ -64,7 +64,7 @@ important information about packaging Xenomai-enabled applications.
 %prep
 %setup -q
 %patch0 -p1 -z .install_fixes
-cp %{SOURCE1} ksrc/arch/x86/patches
+cp %{SOURCE3} ksrc/arch/x86/patches
 
 %build
 %configure \
@@ -143,7 +143,7 @@ fi
 
 %files
 %defattr(-, root, root)
-%doc %{_mandir}/man1/*.gz 
+%doc %{_mandir}/man1/*.gz
 %{_libdir}/lib*.so.*
 %{_libdir}/lib*.so
 %{_libdir}/posix.wrappers
