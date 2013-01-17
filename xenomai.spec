@@ -15,8 +15,8 @@ License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
 Source1: README.developers
-# Stop make install from creating device nodes in /dev
 Source2: xenomai.init
+# Stop make install from creating device nodes in /dev
 Patch0:    xenomai-2.6.0-install_fixes.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: gcc doxygen make tetex texlive-latex
