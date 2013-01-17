@@ -155,6 +155,7 @@ fi
 - Root out %%makeinstall ugliness
 - Disable broken doxygen
 - Undefine _FORTIFY_SOURCE in compile, and add README.developers
+- Add init script
 - Formatting fixes
 
 * Wed Nov  8 2012 John Morris <john@zultron.com> - 2.6.0-5.el6
