@@ -1,5 +1,5 @@
 # pre-release settings
-%global _gitrel    20130113git851281e
+%global _gitrel    20130117gitd8316ad
 %global _pre       0
 %global _prerel %{?_pre:pre%{_pre}}%{?_rc:rc%{_rc}}%{?_gitrel:.%{_gitrel}}
 %global _dotprerel %{?_prerel:.%{_prerel}}
@@ -16,7 +16,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.3
-Release: 0.0%{?_dotprerel}%{?dist}
+Release: 0.1%{?_dotprerel}%{?dist}
 
 License: GPL
 Group: System Tools
@@ -161,6 +161,9 @@ fi
 
 
 %changelog
+* Thu Jan 17 2013 John Morris <john@zultron.com> - 2.6.3-0.1.pre0
+- Update to 2.6.3-20130117gitd8316ad
+
 * Mon Jan 14 2013 John Morris <john@zultron.com> - 2.6.3-0.0.pre0.20130114git308ec2a.el6
 - Update to 2.6.3-20130113git851281e
 - Upstream xenomai-2.6 tree, master branch, 851281e5 commit
