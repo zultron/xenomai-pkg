@@ -7,15 +7,13 @@
 
 Summary: Real-time development framework
 Name: xenomai
-Version: 2.6.2
-Release: 0%{?dist}
+Version: 2.6.2.1
+Release: 1%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
 Source1: README.developers
 Source2: xenomai.init
-# Stop make install from creating device nodes in /dev
-Patch0:    xenomai-2.6.0-install_fixes.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: gcc doxygen make tetex texlive-latex
 URL: http://xenomai.org/
@@ -47,7 +45,6 @@ important information about packaging Xenomai-enabled applications.
 
 %prep
 %setup -q
-%patch0 -p1 -z .install_fixes
 
 %build
 %configure \
@@ -70,7 +67,7 @@ make
 rm -fr $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT%{_includedir}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+make install-user DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 # all docs currently going into -devel pkg
@@ -101,13 +98,6 @@ done
 
 %clean
 rm -fr $RPM_BUILD_ROOT
-
-%pre
-# create device nodes removed from make install
-for ent in `seq 0 31`; do
-    test -e /dev/rtp${ent} || mknod -m 0666 /dev/rtp${ent} c 150 ${ent}
-done
-test -e /dev/rtheap || mknod -m 666 /dev/rtheap c 10 254
 
 %preun
 if [ $1 -eq 0 ] ; then
@@ -146,6 +136,11 @@ fi
 
 
 %changelog
+* Thu Jan 17 2013 John Morris <john@zultron.com> - 2.6.2.1-1
+- Update to 2.6.2.1, the 2.6.2 re-release
+- Use 'make install-user' to avoid /dev packaging problems
+- Remove %%pre script to creat /dev entries; udev works fine
+
 * Thu Jan 10 2013 John Morris <john@zultron.com> - 2.6.2-0.el6
 - Update to v2.6.2
 - Add xenomai patch to -devel pkg
