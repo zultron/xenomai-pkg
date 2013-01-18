@@ -44,7 +44,7 @@ endif
 NEWRELEASEFULL := ${NEWRELEASE}${DOTPREORRC}.${GITREL}
 
 # tarball info
-TARBALL := ${PACKAGE}-${VERSION}${DOTPREORRC}.${GITREL}${TARBALL_EXT}
+TARBALL := ${PACKAGE}-${VERSION}.${GITREL}${TARBALL_EXT}
 
 # committer info
 EMAIL := $(shell git config --get user.email)
