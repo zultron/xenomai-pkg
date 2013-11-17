@@ -8,7 +8,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.2.1
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -29,7 +29,6 @@ integrated into the GNU/Linux environment.
 %package devel
 Summary: Libraries, includes, etc. to develop Xenomai applications
 Group: Development/Libraries
-Requires: xenomai = %{version}-%{release}
 Requires: gcc
 Requires: pkgconfig
 
@@ -136,6 +135,9 @@ fi
 
 
 %changelog
+* Sun Nov 17 2013 John Morris <john@zultron.com> - 2.6.2.1-2
+- Remove Requires: xenomai from -devel pkg
+
 * Thu Jan 17 2013 John Morris <john@zultron.com> - 2.6.2.1-1
 - Update to 2.6.2.1, the 2.6.2 re-release
 - Use 'make install-user' to avoid /dev packaging problems
