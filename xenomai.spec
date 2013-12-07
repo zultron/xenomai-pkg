@@ -7,8 +7,8 @@
 
 Summary: Real-time development framework
 Name: xenomai
-Version: 2.6.2.1
-Release: 2%{?dist}
+Version: 2.6.3
+Release: 1%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -48,13 +48,9 @@ important information about packaging Xenomai-enabled applications.
 %build
 %configure \
     --enable-x86-tsc \
-    --enable-dlopen-skins \
     --with-testdir=%{_libdir}/xenomai
 # this is very broken on el6
 #    --enable-dox-doc \
-
-# prepare patch
-bash scripts/prepare-patch.sh x86
 
 # fix doxygen file
 (cd doc/doxygen && doxygen -u Doxyfile-common)
@@ -87,13 +83,10 @@ cp ksrc/nucleus/udev/*.rules $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 mkdir -p $RPM_BUILD_ROOT%{_initrddir}
 cp %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/xenomai
 
-# install patches
+# install sources to patch kernel
 mkdir -p $RPM_BUILD_ROOT%{_usrsrc}/xenomai
-for i in ksrc/arch/x86/patches/*ipipe-*.patch; do
-    PATCHNAME=$(basename $i)
-    cp $i $RPM_BUILD_ROOT%{_usrsrc}/xenomai/$PATCHNAME
-    cat xenomai_all.patch >> $RPM_BUILD_ROOT%{_usrsrc}/xenomai/$PATCHNAME
-done
+cp -a ksrc include scripts $RPM_BUILD_ROOT%{_usrsrc}/xenomai/
+
 
 %clean
 rm -fr $RPM_BUILD_ROOT
@@ -135,6 +128,11 @@ fi
 
 
 %changelog
+* Fri Dec  6 2013 John Morris <john@zultron.com> - 2.6.3-1
+- New upstream release
+- Upstream removed prepare-patch script; follow Debian example
+  for -devel package
+
 * Sun Nov 17 2013 John Morris <john@zultron.com> - 2.6.2.1-2
 - Remove Requires: xenomai from -devel pkg
 
