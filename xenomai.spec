@@ -8,7 +8,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -31,6 +31,7 @@ Summary: Libraries, includes, etc. to develop Xenomai applications
 Group: Development/Libraries
 Requires: gcc
 Requires: pkgconfig
+Requires: xenomai = %{version}-%{release}
 
 %description devel
 
@@ -128,6 +129,9 @@ fi
 
 
 %changelog
+* Fri Dec 20 2013 John Morris <john@zultron.com> - 2.6.3-2
+- Fix -devel pkg dependency
+
 * Fri Dec  6 2013 John Morris <john@zultron.com> - 2.6.3-1
 - New upstream release
 - Upstream removed prepare-patch script; follow Debian example
