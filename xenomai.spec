@@ -8,7 +8,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.3
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -129,6 +129,9 @@ fi
 
 
 %changelog
+* Sun Dec 22 2013 John Morris <john@zultron.com> - 2.6.3-3
+- Fix xenomai service start/stop ordering
+
 * Fri Dec 20 2013 John Morris <john@zultron.com> - 2.6.3-2
 - Fix -devel pkg dependency
 

@@ -2,7 +2,7 @@
 #
 # xenomai-setup - set up non-root group for Xenomai RT access
 #
-# chkconfig:   2345 00 99
+# chkconfig:   2345 55 25
 # description: This script is used to setup services for use with the \
 #              Xenomai realtime Linux kernel \
 #              The main use now is to enable non-root access for userland \
