@@ -1,14 +1,9 @@
 %global _includedir	/usr/include/xenomai/
 
-# Undefine _FORTIFY_SOURCE cflag; breaks (at least) regression tests
-# http://www.xenomai.org/pipermail/xenomai/2013-January/027341.html
-# http://www.xenomai.org/pipermail/xenomai/2013-January/027342.html
-%global __global_cflags %{__global_cflags} -Wp,-U_FORTIFY_SOURCE
-
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.3
-Release: 3%{?dist}
+Release: 4%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -129,6 +124,9 @@ fi
 
 
 %changelog
+* Mon Dec 23 2013 John Morris <john@zultron.com> - 2.6.3-4
+- Don't disable FORTIFY_SOURCE; fixed with 2.6.3
+
 * Sun Dec 22 2013 John Morris <john@zultron.com> - 2.6.3-3
 - Fix xenomai service start/stop ordering
 
