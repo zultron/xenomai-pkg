@@ -1,0 +1,2 @@
+# group allowed non-authenticated access to Xenomai
+XENOMAI_GROUP=xenomai

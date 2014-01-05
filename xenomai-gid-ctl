@@ -1,0 +1,66 @@
+#!/bin/bash
+#                                                           -*-shell-script-*-
+# Set or unset the xenomai unprivileged group ID
+#
+
+XENOMAI_GROUP=xenomai
+SYSFS_FILE=/sys/module/xeno_nucleus/parameters/xenomai_gid
+
+usage() {
+    local USAGE="$*"
+    test -z "$USAGE" && \
+	USAGE="Usage:  xenomai-gid-ctl [-q] enable|disable|test [group]"
+    echo "$USAGE" 1>&2
+    exit 1
+}
+
+log() {
+    test "$QUIET" = 1 || echo $*
+}
+
+# Quiet operation for embedding in scripts
+if test "$1" = -q; then
+    QUIET=1
+    shift
+fi
+
+# Operation:  enable, disable or test
+OP=$1
+test "$OP" != enable -a "$OP" != disable -a "$OP" != test && usage
+
+# Read defaults:  XENOMAI_GROUP
+test -f /etc/default/xenomai && \
+    . /etc/default/xenomai
+
+# Allow overriding group on commandline
+test -n "$2" && XENOMAI_GROUP=$2
+
+GID=$(getent group $XENOMAI_GROUP | awk -F : '{print $3}')
+test -z "$GID" && \
+    usage "Unable to resolve GID of group '$XENOMAI_GROUP'"
+
+test -f $SYSFS_FILE || \
+    usage "Sysfs file does not exist; is this a Xenomai kernel?"
+
+
+test_gid() {
+    local GID=$1
+    CUR_GID=$(cat $SYSFS_FILE)
+    case "$CUR_GID" in
+        -1) log "No unprivileged Xenomai group configured" ;;
+        "$GID")
+            log "Unprivileged Xenomai group: $XENOMAI_GROUP ($GID)" ;;
+        *)  log "Error:  Configured GID $CUR_GID != requested GID $GID" ;;
+    esac
+    # This determines the exit code of the script
+    test $CUR_GID = $GID
+}
+
+if test $OP = enable; then
+    echo -n $GID > $SYSFS_FILE
+elif test $OP = disable; then
+    echo -1 > $SYSFS_FILE
+    GID=-1
+fi
+
+test_gid $GID

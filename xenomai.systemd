@@ -1,0 +1,14 @@
+[Unit]
+Description=Initialize Xenomai non-root group ID
+# groups must be resolvable
+Wants=nss-user-lookup.target
+
+[Service]   
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/xenomai-gid-ctl enable
+ExecStop=/usr/bin/xenomai-gid-ctl disable
+
+[Install]
+# this must be ready before logins are allowed
+WantedBy=multi-user.target
