@@ -3,15 +3,14 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.3
-Release: 4%{?dist}
+Release: 5%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
-Source1: README.developers
-Source2: xenomai.init
-Source3: xenomai.systemd
-Source4: xenomai.default
-Source5: xenomai-gid-ctl
+Source1: xenomai.init
+Source2: xenomai.systemd
+Source3: xenomai.default
+Source4: xenomai-gid-ctl
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
 BuildRequires: gcc doxygen make tetex texlive-latex
 URL: http://xenomai.org/
@@ -43,7 +42,6 @@ integrated into the GNU/Linux environment.
 
 %build
 %configure \
-    --enable-x86-tsc \
     --with-testdir=%{_libdir}/xenomai
 # this is very broken on el6
 #    --enable-dox-doc \
@@ -74,16 +72,16 @@ cp ksrc/nucleus/udev/*.rules $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 
 # init/unit scripts
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/default
-cp %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/default/xenomai
-install -m 0755 %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}
+cp %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/default/xenomai
+install -m 0755 %{SOURCE4} $RPM_BUILD_ROOT%{_bindir}
 %if 0%{?fedora} >= 18
 # systemd
 mkdir -p $RPM_BUILD_ROOT%{_unitdir}
-cp %{SOURCE3} $RPM_BUILD_ROOT%{_unitdir}/xenomai.service
+cp %{SOURCE2} $RPM_BUILD_ROOT%{_unitdir}/xenomai.service
 %else
 # chkconfig
 mkdir -p $RPM_BUILD_ROOT%{_initrddir}
-install -m 0755 %{SOURCE2} $RPM_BUILD_ROOT%{_initrddir}/xenomai
+install -m 0755 %{SOURCE1} $RPM_BUILD_ROOT%{_initrddir}/xenomai
 %endif
 
 # install sources to patch kernel
@@ -144,12 +142,14 @@ fi
 
 
 %changelog
-* Sun Jan  5 2014 John Morris <john@zultron.com> - 2.6.3-5
+* Mon Jan  6 2014 John Morris <john@zultron.com> - 2.6.3-5
 - Update system initialization scripts:
   - Add systemd unit for Fedora 17+
   - Add xenomai-gid-ctl script and default file
   - Update sysv init to use gid-ctl script
   - Update %%post/%%preun scripts
+- Remove '--enable-x86-tsc' from ./configure (now enabled by default)
+- Remove _FORTIFY_SOURCE README and comments; renumber sources
 
 * Mon Dec 23 2013 John Morris <john@zultron.com> - 2.6.3-4
 - Don't disable FORTIFY_SOURCE; fixed with 2.6.3
