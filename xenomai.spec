@@ -38,9 +38,6 @@ Linux kernel, in order to provide a pervasive, interface-agnostic,
 hard real-time support to user-space applications, seamlessly
 integrated into the GNU/Linux environment.
 
-Developers should read %{_docdir}/%{name}-devel-%{version} for
-important information about packaging Xenomai-enabled applications.
-
 %prep
 %setup -q
 
@@ -67,10 +64,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 # all docs currently going into -devel pkg
 mv $RPM_BUILD_ROOT%{_docdir}/%{name} \
     $RPM_BUILD_ROOT%{_docdir}/%{name}-devel-%{version}
-
-# include warning about _FORTIFY_SOURCE for developers
-# hopefully this can be removed when upstream fixes the problem
-cp %{SOURCE1} $RPM_BUILD_ROOT%{_docdir}/%{name}-devel-%{version}
 
 # copy examples
 cp -a examples \
