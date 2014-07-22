@@ -3,7 +3,7 @@
 Summary: Real-time development framework
 Name: xenomai
 Version: 2.6.3
-Release: 5%{?dist}
+Release: 6%{?dist}
 License: GPL
 Group: System Tools
 Source0: http://download.gna.org/xenomai/stable/xenomai-%{version}.tar.bz2
@@ -12,7 +12,13 @@ Source2: xenomai.systemd
 Source3: xenomai.default
 Source4: xenomai-gid-ctl
 BuildRoot: %{_tmppath}/%{name}-%{version}-root
-BuildRequires: gcc doxygen make tetex texlive-latex
+BuildRequires: gcc
+BuildRequires: doxygen
+BuildRequires: make
+BuildRequires: texlive-latex
+%if 0%{?rhel} < 7
+BuildRequires: tetex
+%endif
 URL: http://xenomai.org/
 
 %description
@@ -142,6 +148,9 @@ fi
 
 
 %changelog
+* Tue Jul 22 2014 John Morris <john@zultron.com> - 2.6.3-6
+- Make BR: tetex conditional for el7
+
 * Mon Jan  6 2014 John Morris <john@zultron.com> - 2.6.3-5
 - Update system initialization scripts:
   - Add systemd unit for Fedora 17+
@@ -152,7 +161,7 @@ fi
 - Remove _FORTIFY_SOURCE README and comments; renumber sources
 
 * Mon Dec 23 2013 John Morris <john@zultron.com> - 2.6.3-4
-- Don't disable FORTIFY_SOURCE; fixed with 2.6.3
+- Do not disable FORTIFY_SOURCE; fixed with 2.6.3
 
 * Sun Dec 22 2013 John Morris <john@zultron.com> - 2.6.3-3
 - Fix xenomai service start/stop ordering
