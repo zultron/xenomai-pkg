@@ -15,3 +15,5 @@
 
 # OSC
 /.osc/
+/xenomai_*.dsc
+/xenomai_*.tar.bz2
