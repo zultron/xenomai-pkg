@@ -1,3 +1,10 @@
+xenomai (2.6.3-1) UNRELEASED; urgency=low
+
+  * Convert to quilt package for modifications
+  * Create missing dirs in rules for udev and modprobe.d
+
+ -- John Morris <john@zultron.com>  Mon, 26 Jan 2015 14:08:58 -0600
+
 xenomai (2.6.3) UNRELEASED; urgency=low
 
   * New release
